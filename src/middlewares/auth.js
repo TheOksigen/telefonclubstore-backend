@@ -20,7 +20,7 @@ const auth = async (req, res, next) => {
         const user = await prisma.user.findUnique({
             where: { id: decoded.userid }
         });
-        if (!user) {
+        if (!user.id) {
             return res.status(401).json({ error: 'Unauthorized: Invalid user' });
         }
 
