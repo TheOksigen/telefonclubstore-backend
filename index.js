@@ -10,9 +10,6 @@ app.use(cors())
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-
-  
-
 // app.post('/img', auth, upload.single("img"), (req, res) => {
 //   console.log(req.file);
 //   res.send('Successfully uploaded ')
