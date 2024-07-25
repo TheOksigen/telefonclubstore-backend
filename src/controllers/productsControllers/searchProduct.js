@@ -1,8 +1,16 @@
 const { PrismaClient } = require('@prisma/client');
+const { z } = require('zod');
 const prisma = new PrismaClient();
+
+const querySchema  =  z.object({
+  name: z.string()
+    .min(3, { message: 'Product name must be at least 3 characters long' })
+    .max(255, { message: 'Product name must be less than 255 characters' })
+})
 
 const searchProduct = async (req, res) => {
   try {
+    querySchema.safeParse(req.query)
     const { name } = req.query;
     const filter = name ? {
       name: {
