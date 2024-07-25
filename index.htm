@@ -30,6 +30,7 @@
     </form>
 
     <script>
+        fetch("https://telefonclub.yetim.me/products").then(res=> res.json()).then(result=> console.log(result))
         document.getElementById('product-form').addEventListener('submit', async (event) => {
             event.preventDefault();
 

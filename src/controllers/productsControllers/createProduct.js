@@ -23,15 +23,23 @@ const createProductSchema = z.object({
   description: z.string()
     .min(3, { message: 'Product description must be at least 3 characters long' })
     .max(255, { message: 'Product description must be less than 255 characters' })
-    .trim()
+    .trim(),
+  metadata: z.object({}).optional()
 });
 
 const createProduct = async (req, res) => {
-  const { name, price, discount, categoryId, description } = req.body;
+  const { name, price, discount, categoryId, description, metadata } = req.body;
   const files = req.files;
-  console.log(req.body);
   const img = files.map(file => file.location);
-  const parseResult = createProductSchema.safeParse({ img, name, price: Number(price), discount: Number(discount), categoryId: Number(categoryId), description });
+  const parseResult = createProductSchema.safeParse({
+    img,
+    name,
+    price: Number(price),
+    discount: Number(discount),
+    categoryId: Number(categoryId),
+    description,
+    metadata: metadata ? JSON.parse(metadata) : undefined 
+  });
 
   if (!parseResult.success) {
     return res.status(400).json({ errors: parseResult.error.format() });
@@ -40,11 +48,13 @@ const createProduct = async (req, res) => {
   try {
     const product = await prisma.product.create({
       data: {
-        img, name,
+        img,
+        name,
         price: parseFloat(price),
         discount: parseInt(discount),
         categoryId: parseInt(categoryId),
-        description
+        description,
+        metadata: parseResult.data.metadata
       }
     });
     res.status(201).json(product);
