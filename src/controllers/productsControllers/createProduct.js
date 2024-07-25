@@ -38,7 +38,7 @@ const createProduct = async (req, res) => {
     discount: Number(discount),
     categoryId: Number(categoryId),
     description,
-    metadata: metadata ? JSON.parse(metadata) : undefined 
+    metadata: metadata ? JSON.parse(metadata) : undefined
   });
 
   if (!parseResult.success) {
