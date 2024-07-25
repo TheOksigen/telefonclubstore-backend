@@ -2,10 +2,9 @@ generator client {
   provider = "prisma-client-js"
 }
 
-
 datasource db {
-  provider = "postgresql"
-  url = env("POSTGRES_PRISMA_URL") // uses connection pooling
+  provider  = "postgresql"
+  url       = env("POSTGRES_PRISMA_URL") // uses connection pooling
   directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
 }
 
@@ -20,13 +19,14 @@ model Product {
   description String   @db.Text
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+  metadata    Json
 }
 
 model Category {
-  id           Int       @id @default(autoincrement())
-  categoryName String    @unique @db.VarChar(255)
+  id           Int           @id @default(autoincrement())
+  categoryName String        @unique @db.VarChar(255)
   Product      Product[]
-  Subcategory Subcategory[]
+  Subcategory  Subcategory[]
 }
 
 model Subcategory {
