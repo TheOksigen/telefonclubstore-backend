@@ -4,7 +4,8 @@ const auth = require('../middlewares/auth');
 
 const router = express.Router();
 
-router.post('/register',auth, register);
+router.post('/register', auth, register);
+router.get('/verify-token', auth, verifyToken);
 router.post('/login', login);
 
 module.exports = router;
