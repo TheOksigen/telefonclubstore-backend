@@ -3,14 +3,14 @@ const app = express();
 const productsRouter = require('./src/routes/products');
 const categoriesRouter = require('./src/routes/categories');
 const loginRouter = require('./src/routes/login');
-
-const cors = require("cors")
+const cors = require("cors");
+const upload = require('./src/middlewares/upload');
 require('dotenv').config();
 app.use(cors())
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// app.post('/img', auth, upload.single("img"), (req, res) => {
+// app.post('/img', upload.single("img"), (req, res) => {
 //   console.log(req.file);
 //   res.send('Successfully uploaded ')
 // })

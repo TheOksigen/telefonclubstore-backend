@@ -21,8 +21,7 @@ const auth = async (req, res, next) => {
             where: { id: decoded.userid }
         });
         if (!user.id) {
-            return res.status(401).json({ error: 'Unauthorized: Invalid user' });
-        }
+            return res.status(401).json({ error: 'Unauthorized: Invalid user' });}
 
         req.user = user;
         next();
