@@ -7,14 +7,7 @@ const categoriesRouter = require('./src/routes/categories');
 const loginRouter = require('./src/routes/login');
 
 require('dotenv').config();
-
-// Allow CORS for all routes
 app.use(cors());
-
-// Allow specific origins
-// app.use(cors({
-//   origin: 'http://127.0.0.1:5500'
-// }));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
