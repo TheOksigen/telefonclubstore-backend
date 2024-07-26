@@ -6,7 +6,7 @@ const {
     getCategories,
     getCategoriesById,
     deleteCategoryById
-} = require('../controllers/categoriesControllers');
+} = require('../controllers/categories.controllers');
 const auth = require('../middlewares/auth.middleware');
 const validator = require('../middlewares/validation.middleware');
 const { categorySchema, subcategorySchema } = require('../schema/categories.schema');
