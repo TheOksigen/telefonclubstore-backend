@@ -1,14 +1,10 @@
 const express = require('express');
-const {
-    createCategory,
-    createSubcategory,
-    editCategoriesById,
-    getCategories,
-    getCategoriesById,
-    deleteCategoryById
-} = require('../controllers/categories.controllers');
+
+const { createCategory, createSubcategory, editCategoriesById, getCategories, getCategoriesById, deleteCategoryById } = require('../controllers/categories.controllers');
+
 const auth = require('../middlewares/auth.middleware');
 const validator = require('../middlewares/validation.middleware');
+
 const { categorySchema, subcategorySchema } = require('../schema/categories.schema');
 
 const router = express.Router();
