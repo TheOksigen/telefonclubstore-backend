@@ -5,7 +5,7 @@ const app = express();
 const productsRouter = require('./src/routes/products');
 const categoriesRouter = require('./src/routes/categories');
 const loginRouter = require('./src/routes/login');
-const upload = require('./src/middlewares/upload');
+
 require('dotenv').config();
 
 // Allow CORS for all routes
