@@ -33,19 +33,22 @@
 
     <script>
         async function ok() {
-            fetch("http://localhost:3000/products").then(res => res.json()).then(result => console.log(result))
-
+            fetch("https://telefonclub.yetim.me/products").then(res => res.json()).then(result => console.log(result))
         }
         ok()
         document.getElementById('product-form').addEventListener('submit', async (event) => {
             event.preventDefault();
 
             const formData = new FormData(event.target);
+            let token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyaWQiOjIsImlhdCI6MTcyMjEwOTk2MywiZXhwIjozNjAwMDE3MjIxMDYzNjN9.UR9vIJYkRw6nt8EcRXa55oQC2yHyfFtqFA5OzsWdRmA"
 
             try {
-                const response = await fetch('http://localhost:3000/products', {
+                const response = await fetch('https://telefonclub.yetim.me/products', {
                     method: 'POST',
-                    body: formData
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify(formData)
                 });
 
                 if (!response.ok) {
