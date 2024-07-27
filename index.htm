@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create Product</title>
 </head>
+
 <body>
     <h1>Create a New Product</h1>
     <form id="product-form" enctype="multipart/form-data">
@@ -30,7 +32,11 @@
     </form>
 
     <script>
-        fetch("https://telefonclub.yetim.me/products").then(res=> res.json()).then(result=> console.log(result))
+        async function ok() {
+            fetch("http://localhost:3000/products").then(res => res.json()).then(result => console.log(result))
+
+        }
+        ok()
         document.getElementById('product-form').addEventListener('submit', async (event) => {
             event.preventDefault();
 
@@ -59,4 +65,5 @@
         });
     </script>
 </body>
+
 </html>

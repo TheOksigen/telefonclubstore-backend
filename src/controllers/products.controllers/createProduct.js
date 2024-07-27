@@ -2,6 +2,7 @@ const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
 const createProduct = async (req, res) => {
+  
   const { name, price, discount, categoryId, description, metadata } = req.body;
   const files = req.files;
   const img = files.map(file => file.location);    
@@ -14,11 +15,12 @@ const createProduct = async (req, res) => {
         discount: parseInt(discount),
         categoryId: parseInt(categoryId),
         description,
-        metadata: parseResult.data.metadata
+        metadata: metadata
       }
     });
     res.status(201).json(product);
   } catch (error) {
+    console.log(error);
     res.status(500).json({ error: error.message });
   }
 };
