@@ -9,10 +9,10 @@ const validator = require('../middlewares/validation.middleware');
 
 const { productSchema } = require('../schema/product.schema');
 
-router.post('/', upload.array("img", 5), createProduct);
+router.post('/', auth, upload.array("img", 5), createProduct);
 router.get('/', getProducts);
 router.get('/id/:id', getProductById);
-router.put('/:id', auth, validator(productSchema), upload.array("img", 5), editProduct);
+router.put('/:id', auth, upload.array("img", 5), editProduct);
 router.get('/search', searchProduct);
 router.delete('/:id', auth, deleteProductById);
 
