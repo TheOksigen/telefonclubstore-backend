@@ -10,7 +10,7 @@ const auth = async (req, res, next) => {
             return res.status(401).json({ error: 'Unauthorized: No token provided' });        }
 
         const token = authHeader.split(' ')[1];
-        console.log(token);
+        
         if (!token) {
             return res.status(401).json({ error: 'Unauthorized: Malformed token' });
         }
