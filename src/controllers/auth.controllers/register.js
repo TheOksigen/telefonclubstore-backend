@@ -9,7 +9,6 @@ const register = async (req, res) => {
    
     try {
         const { login, password } = req.body;
-
         const existingUser = await prisma.user.findUnique({
             where: { login }
         });
