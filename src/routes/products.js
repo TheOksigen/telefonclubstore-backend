@@ -9,7 +9,7 @@ const validator = require('../middlewares/validation.middleware');
 
 const { productSchema } = require('../schema/product.schema');
 
-router.post('/', auth, upload.array("img", 5), createProduct);
+router.post('/', validator(productSchema), auth, upload.array("img", 5), createProduct);
 router.get('/', getProducts);
 router.get('/id/:id', getProductById);
 router.put('/:id', auth, upload.array("img", 5), editProduct);
