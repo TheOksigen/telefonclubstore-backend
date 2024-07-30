@@ -5,7 +5,7 @@ const prisma = new PrismaClient();
 const subcategorySchema = z.object({
     categoryName: z.string()
         .min(3, { message: 'Subcategory name must be at least 3 characters long' })
-        .max(25, { message: 'Subcategory name must be less than 255 characters' })
+        .max(50, { message: 'Subcategory name must be less than 255 characters' })
         .trim()
         .min(1, { message: 'Subcategory name is required' }),
     categoryId: z.number()
@@ -30,7 +30,7 @@ const createSubcategory = async (req, res) => {
                 categoryId
             }
         });
-        res.status(201).json(subcategory);
+        res.status(201).json({ message: "subcategory created has succesefuly alla sene sukur", subcategory });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }

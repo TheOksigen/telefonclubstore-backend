@@ -9,8 +9,8 @@ const { categorySchema, subcategorySchema } = require('../schema/categories.sche
 
 const router = express.Router();
 
-router.post('/', validator(categorySchema), auth, createCategory);
-router.post('/subcategory', validator(subcategorySchema), auth, createSubcategory);
+router.post('/',  auth, createCategory);
+router.post('/subcategory',  auth, createSubcategory);
 router.get('/', getCategories);
 router.get('/:id', getCategoriesById);
 router.put('/:id', auth, editCategoriesById);
