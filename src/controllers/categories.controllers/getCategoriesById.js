@@ -2,7 +2,7 @@ const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
 
-const getCategoriesById = async (req, res) => {
+const getCategoriesById = async (req, res) => {    
     try {
         const { id } = req.params;
         const categories = await prisma.category.findMany({

@@ -9,15 +9,15 @@ const getProductByIdSchema = z.object({
 });
 
 const getProductById = async (req, res) => {
-  const parseResult = getProductByIdSchema.safeParse(req.params);
+  const parseResult = getProductByIdSchema.safeParse({ id: Number(req.params.id) });
   if (!parseResult.success) {
     return res.status(400).json({ errors: parseResult.error.format() });
   }
   try {
-    const { id } = req.params;
+    const { id } = parseResult.data;
     const product = await prisma.product.findUnique({
-      where: { id: Number(id) },
-      include: { category: true }, 
+      where: { id },
+      include: { category: true },
     });
     if (!product) {
       return res.status(404).json({ message: 'Product not found' });
