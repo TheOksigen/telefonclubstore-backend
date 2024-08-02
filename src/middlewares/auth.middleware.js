@@ -7,10 +7,11 @@ const auth = async (req, res, next) => {
     try {
         const authHeader = req.headers['authorization'];
         if (!authHeader) {
-            return res.status(401).json({ error: 'Unauthorized: No token provided' });        }
+            return res.status(401).json({ error: 'Unauthorized: No token provided' });
+        }
 
         const token = authHeader.split(' ')[1];
-        
+
         if (!token) {
             return res.status(401).json({ error: 'Unauthorized: Malformed token' });
         }
@@ -20,7 +21,8 @@ const auth = async (req, res, next) => {
             where: { id: decoded.userid }
         });
         if (!user.id) {
-            return res.status(401).json({ error: 'Unauthorized: Invalid user' });}
+            return res.status(401).json({ error: 'Unauthorized: Invalid user' });
+        }
 
         req.user = user;
         next();

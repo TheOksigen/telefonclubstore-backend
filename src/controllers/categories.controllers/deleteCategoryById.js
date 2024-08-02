@@ -14,18 +14,10 @@ const deleteCategoryById = async (req, res) => {
         return res.status(400).json({ errors: parseResult.error.format() });
     }
     try {
-        const { id } = parseResult.data;
-        console.log(id);
-        await prisma.product.deleteMany({
-            where: { categoryId: id }
-        });
-        await prisma.subcategory.deleteMany({
-            where: { categoryId: id }
-        });
+        const { id } = parseResult.data;                
         await prisma.category.delete({
             where: { id }
         });
-
         res.status(200).json({ message: 'Category deleted successfully' });
     } catch (error) {
         console.log(error);

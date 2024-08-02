@@ -1,5 +1,6 @@
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["tracing"]
 }
 
 datasource db {
@@ -15,13 +16,13 @@ model Product {
   price         Decimal     @db.Decimal(10, 2)
   discount      Decimal     @default(0) @db.Decimal(5, 2)
   categoryId    Int
-  category      Category    @relation(fields: [categoryId], references: [id])
+  category      Category    @relation(fields: [categoryId], references: [id], onDelete: Cascade)
   subcategoryId Int
-  subcategory   Subcategory @relation(fields: [subcategoryId], references: [id])
+  subcategory   Subcategory @relation(fields: [subcategoryId], references: [id], onDelete: Cascade)
   description   String      @db.Text
   createdAt     DateTime    @default(now())
   updatedAt     DateTime    @updatedAt
-  metadata      Json        @default("{}")
+  metadata      Json        @default("[]")
 }
 
 model Category {
@@ -34,7 +35,7 @@ model Category {
 model Subcategory {
   id           Int       @id @default(autoincrement())
   categoryName String    @unique @db.VarChar(255)
-  Category     Category  @relation(fields: [categoryId], references: [id])
+  Category     Category  @relation(fields: [categoryId], references: [id], onDelete: Cascade)
   categoryId   Int
   Product      Product[]
 }

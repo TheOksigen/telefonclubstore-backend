@@ -6,7 +6,7 @@ const deleteSubcategory = async (req, res) => {
 
     try {
         await prisma.subcategory.delete({
-            where: { id: Number(id) },
+            where: { id: Number(id) }
         });
         res.status(200).json({ message: "Subcategory deleted successfully" });
     } catch (error) {

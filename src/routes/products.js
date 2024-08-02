@@ -1,17 +1,30 @@
-// src/routes/products.js
 const express = require('express');
 const router = express.Router();
 
-const { createProduct, getProducts, getProductById, editProduct, deleteProductById, searchProduct } = require('../controllers/products.controllers');
+const {
+    createProduct,
+    getProducts,
+    getProductById,
+    editProduct,
+    deleteProductById,
+    searchProduct,
+    getProductsByCategory,
+    getProductsBySubcategory
+} = require('../controllers/products.controllers');
+
+
 const auth = require('../middlewares/auth.middleware');
 const upload = require('../middlewares/upload.middleware');
 
-
-router.post('/', auth, upload.array("img", 5), createProduct);
-router.get('/', getProducts);
-router.get('/id/:id', getProductById);
-router.put('/:id', auth, upload.array("img", 5), editProduct);
+router.post('/create', auth, upload.array('img', 5), createProduct);
+router.get('/all', getProducts);
+router.get('/get/:id', getProductById);
+router.put('/update/:id', auth, upload.array('img', 5), editProduct);
 router.get('/search', searchProduct);
-router.delete('/:id', auth, deleteProductById);
+router.delete('/delete/:id', auth, deleteProductById);
+
+
+router.get('/category/:category', getProductsByCategory);
+router.get('/subcategory/:subcategory', getProductsBySubcategory);
 
 module.exports = router;
