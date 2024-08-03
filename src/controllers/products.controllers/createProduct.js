@@ -27,7 +27,7 @@ const productSchema = z.object({
         .min(3, { message: 'Product description must be at least 3 characters long' })
         .max(255, { message: 'Product description must be less than 255 characters' })
         .trim(),
-    metadata: z.object({}).optional()
+    metadata: z.object([]).optional()
 });
 
 const createProduct = async (req, res) => {
