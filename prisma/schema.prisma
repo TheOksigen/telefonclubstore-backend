@@ -22,7 +22,7 @@ model Product {
   description   String      @db.Text
   createdAt     DateTime    @default(now())
   updatedAt     DateTime    @updatedAt
-  metadata      Json        @default("[]")
+  metadata      Json        @default("")
 }
 
 model Category {
