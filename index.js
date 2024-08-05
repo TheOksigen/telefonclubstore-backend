@@ -12,9 +12,9 @@ require('dotenv').config();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use('/products', productsRouter);
-app.use('/categories', categoriesRouter);
-app.use('/auth', loginRouter);
+app.use('/products', cors(), productsRouter);
+app.use('/categories', cors(), categoriesRouter);
+app.use('/auth', cors(), loginRouter);
 
 const PORT = process.env.PORT || 3000;
 
