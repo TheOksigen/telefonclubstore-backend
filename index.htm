@@ -36,7 +36,7 @@
 
     <script>
         async function ok() {
-            fetch("https://telefonclub.yetim.me/products")
+            fetch("https://telefonclub.yetim.me/products/all")
                 .then(res => res.json())
                 .then(result => console.log(result));
         }
@@ -49,8 +49,8 @@
             const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyaWQiOjIsImlhdCI6MTcyMjExMzkxNCwiZXhwIjozNjAwMDE3MjIxMTAzMTR9.O2Jq2yCuMQLzlXyC6ZXbGbPDIBNpYleIxyxuZAF5WnE';
 
             try {
-                const response = await fetch('https://telefonclub.yetim.me/products', {
-                    method: 'POST',
+                const response = await fetch('https://telefonclub.yetim.me/products/update/34', {
+                    method: 'PUT',
                     headers: {
                         'Authorization': `Bearer ${token}`
                     },
