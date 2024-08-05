@@ -9,7 +9,7 @@ const deleteCategoryByIdSchema = z.object({
 });
 
 const deleteCategoryById = async (req, res) => {
-    const parseResult = deleteCategoryByIdSchema.safeParse({ id: Number(req.params.id) });
+    const parseResult = deleteCategoryByIdSchema.parse({ id: Number(req.params.id) });
     if (!parseResult.success) {
         return res.status(400).json({ errors: parseResult.error.format() });
     }
