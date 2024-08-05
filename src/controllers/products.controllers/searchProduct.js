@@ -10,7 +10,7 @@ const querySchema = z.object({
 
 const searchProduct = async (req, res) => {
   try {
-    querySchema.safeParse(req.query)
+    querySchema.parse(req.query)
     const { name } = req.query;
     const filter = name ? {
       name: {

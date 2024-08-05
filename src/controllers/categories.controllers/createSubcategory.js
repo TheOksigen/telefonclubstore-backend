@@ -14,7 +14,7 @@ const subcategorySchema = z.object({
 });
 
 const createSubcategory = async (req, res) => {
-    const parseResult = subcategorySchema.safeParse({
+    const parseResult = subcategorySchema.parse({
         ...req.body,
         categoryId: Number(req.body.categoryId),
     });

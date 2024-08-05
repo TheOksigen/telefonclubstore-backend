@@ -35,7 +35,7 @@ const productSchema = z.object({
 });
 
 const editProduct = async (req, res) => {
-  const parseResult = productSchema.safeParse(req.body);
+  const parseResult = productSchema.parse(req.body);
 
   if (!parseResult.success) {
     return res.status(400).json({ errors: parseResult.error.format() });

@@ -11,7 +11,7 @@ const categorySchema = z.object({
 });
 
 const createCategory = async (req, res) => {
-    const parseResult = categorySchema.safeParse(req.body);
+    const parseResult = categorySchema.parse(req.body);
     if (!parseResult.success) {
         return res.status(400).json({ errors: parseResult.error.format() });
     }
