@@ -1,13 +1,13 @@
 const express = require('express');
 const cors = require('cors');
 const app = express();
+app.use(cors());
 
 const productsRouter = require('./src/routes/products');
 const categoriesRouter = require('./src/routes/categories');
 const loginRouter = require('./src/routes/login');
 
 require('dotenv').config();
-app.use(cors());
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
