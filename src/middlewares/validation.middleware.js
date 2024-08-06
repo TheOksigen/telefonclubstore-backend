@@ -1,5 +1,4 @@
-const validator = (schema) => {
-    
+const validator = (schema) => {    
     return (req, res, next) => {
         let result = schema.safeParse(req.body);
         if (result?.error) {
