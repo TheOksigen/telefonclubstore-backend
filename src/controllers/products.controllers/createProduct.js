@@ -27,14 +27,14 @@ const productSchema = z.object({
         .min(3, { message: 'Product description must be at least 3 characters long' })
         .max(255, { message: 'Product description must be less than 255 characters' })
         .trim(),
-    metadata: z.string()
+    metadata: z.string().optional().default('')
 });
 
 const createProduct = async (req, res) => {
     const files = req.files;
     const img = files.map(file => file.location);
 
-    const parseResult = productSchema.parse({
+    const parseResult = productSchema.safeParse({
         ...req.body,
         img,
         price: parseFloat(req.body.price),

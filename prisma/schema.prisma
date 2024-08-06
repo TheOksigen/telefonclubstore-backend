@@ -5,16 +5,15 @@ generator client {
 
 datasource db {
   provider  = "postgresql"
-  url       = env("POSTGRES_PRISMA_URL")
-  directUrl = env("POSTGRES_URL_NON_POOLING")
+  url       = env("TELEFONCLUB_PRISMA_URL")
+  directUrl = env("TELEFONCLUB_URL_NON_POOLING")
 }
-
 model Product {
   id            Int         @id @default(autoincrement())
   img           String[]
   name          String      @db.VarChar(255)
-  price         Decimal     @db.Decimal(10, 2)
-  discount      Decimal     @default(0) @db.Decimal(5, 2)
+  price         Float       
+  discount      Int         @default(0) 
   categoryId    Int
   category      Category    @relation(fields: [categoryId], references: [id], onDelete: Cascade)
   subcategoryId Int
@@ -22,7 +21,7 @@ model Product {
   description   String      @db.Text
   createdAt     DateTime    @default(now())
   updatedAt     DateTime    @updatedAt
-  metadata      String        @default("")
+  metadata      String?      @default("")
 }
 
 model Category {
