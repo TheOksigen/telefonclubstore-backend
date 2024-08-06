@@ -3,9 +3,11 @@ const prisma = new PrismaClient();
 
 const getProducts = async (req, res) => {
   try {
-    const page = parseInt(req.params.page, 10) || 1;
-    const limit = parseInt(req.params.limit, 10) || 10;
+    // Use query parameters for pagination
+    const page = parseInt(req.query.page, 10) || 1;
+    const limit = parseInt(req.query.limit, 10) || 10;
     const skip = (page - 1) * limit;
+
     const products = await prisma.product.findMany({
       select: {
         id: true, img: true, name: true, category: true,
