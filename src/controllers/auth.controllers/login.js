@@ -4,7 +4,7 @@ const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
 
-const login = async (req, res) => {
+const login = async (req , res) => {
     try {        
         const { login, password } = req.body;
         

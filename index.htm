@@ -19,10 +19,10 @@
         <input type="number" id="discount" name="discount" step="1" min="0" max="100" required><br><br>
 
         <label for="categoryId">Category ID:</label>
-        <input type="number" id="categoryId" name="categoryId" required><br><br>
+        <input type="number" value="19" id="categoryId" name="categoryId" required><br><br>
         
         <label for="subcategoryId">Subcategory ID:</label>
-        <input type="number" id="subcategoryId" name="subcategoryId" required><br><br>
+        <input type="number" value="46" id="subcategoryId" name="subcategoryId" required><br><br>
 
         <label for="description">Description:</label>
         <textarea id="description" name="description" rows="4" required></textarea><br><br>
@@ -50,7 +50,7 @@
             event.preventDefault();
 
             const formData = new FormData(event.target);
-            const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyaWQiOjIsImlhdCI6MTcyMjExMzkxNCwiZXhwIjozNjAwMDE3MjIxMTAzMTR9.O2Jq2yCuMQLzlXyC6ZXbGbPDIBNpYleIxyxuZAF5WnE';
+            const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyaWQiOjIsImlhdCI6MTcyMzA0NDI0OCwiZXhwIjozNjAwMDE3MjMwNDA2NDh9.frFBxKt_U5snQDAy9y_vzfcXjjLGTlClzIU0rPWROEw';
 
             try {
                 const response = await fetch('http://localhost:3000/products/update/30', { 

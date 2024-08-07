@@ -4,15 +4,11 @@ const { z } = require('zod');
 const prisma = new PrismaClient();
 
 const productSchema = z.object({
-  id: z.number()
-    .int({ message: 'Product ID must be an integer' })
-    .positive({ message: 'Product ID must be a positive integer' }),
   img: z.array(z.string().url({ message: 'Invalid URL format' })).nonempty({ message: 'At least one image URL is required' }).optional(),
   name: z.string()
     .min(3, { message: 'Product name must be at least 3 characters long' })
     .max(255, { message: 'Product name must be less than 255 characters' })
-    .trim()
-    .nonempty({ message: 'Product name is required' }),
+    .trim(),
   price: z.number()
     .positive({ message: 'Price must be a positive number' })
     .min(0.01, { message: 'Price must be at least 0.01' })
@@ -31,22 +27,32 @@ const productSchema = z.object({
     .min(3, { message: 'Product description must be at least 3 characters long' })
     .max(255, { message: 'Product description must be less than 255 characters' })
     .trim().optional(),
-  metadata: z.object({}).optional()
+  metadata: z.string().optional()
 });
 
 const editProduct = async (req, res) => {
-  const parseResult = productSchema.parse(req.body);
-
+  const { price, discount, categoryId, subcategoryId } = req.body;  
+  const obj = {
+    ...req.body,
+    price: Number(price),
+    discount: Number(discount),
+    categoryId: Number(categoryId),
+    subcategoryId: +subcategoryId,
+  }
+  const parseResult = productSchema.safeParse(obj);  
   if (!parseResult.success) {
-    return res.status(400).json({ errors: parseResult.error.format() });
+    return res.status(400).json({ errors: parseResult });
   }
 
   try {
-    const { id, img, name, price, discount, categoryId, subcategoryId, description, metadata } = parseResult.data;
+    const id = Number(req.params.id);
+    const files = req.files;
+    const img = files.map(file => file.location);
+    const { name, price, discount, categoryId, subcategoryId, description, metadata } = parseResult.data;
 
     const updatedProduct = await prisma.product.update({
       where: { id },
-      data: { img, name, price, discount, categoryId, subcategoryId, description, metadata }
+      data: { img, name, price: Number(price), discount: Number(discount), categoryId: Number(categoryId), subcategoryId: +subcategoryId, description, metadata }
     });
 
     res.status(200).json(updatedProduct);
