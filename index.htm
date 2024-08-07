@@ -1,15 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create Product</title>
 </head>
-
 <body>
     <h1>Create a New Product</h1>
     <form id="product-form" enctype="multipart/form-data">
+
         <label for="name">Product Name:</label>
         <input type="text" id="name" name="name" required><br><br>
 
@@ -32,17 +31,15 @@
         <input type="file" id="img" name="img" multiple required><br><br>
 
         <button type="submit">Create Product</button>
-        
     </form>
 
     <script>
         async function fetchAllProducts() {
             try {
                 const response = await fetch("http://localhost:3000/products/all");
-                                            //   https://telefonclubstore.yetim.me/products/all
                 if (!response.ok) throw new Error('Network response was not ok');
                 const result = await response.json();
-                console.log(result[0]);
+                console.log(result);
             } catch (error) {
                 console.error('Error fetching products:', error);
             }
@@ -56,8 +53,8 @@
             const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyaWQiOjIsImlhdCI6MTcyMjExMzkxNCwiZXhwIjozNjAwMDE3MjIxMTAzMTR9.O2Jq2yCuMQLzlXyC6ZXbGbPDIBNpYleIxyxuZAF5WnE';
 
             try {
-                const response = await fetch('https://telefonclub.yetim.me/products/create', { 
-                    method: 'POST',
+                const response = await fetch('http://localhost:3000/products/update/30', { 
+                    method: 'PUT',
                     headers: {
                         'Authorization': `Bearer ${token}`
                     },
@@ -81,5 +78,4 @@
         });
     </script>
 </body>
-
 </html>

@@ -12,7 +12,7 @@ const productSchema = z.object({
     .min(3, { message: 'Product name must be at least 3 characters long' })
     .max(255, { message: 'Product name must be less than 255 characters' })
     .trim()
-    .nonempty({ message: 'Product name is required' }).optional(),
+    .nonempty({ message: 'Product name is required' }),
   price: z.number()
     .positive({ message: 'Price must be a positive number' })
     .min(0.01, { message: 'Price must be at least 0.01' })
