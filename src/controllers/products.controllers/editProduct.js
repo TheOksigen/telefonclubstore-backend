@@ -38,7 +38,7 @@ const editProduct = async (req, res) => {
   const parseResult = productSchema.parse(req.body);
 
   if (!parseResult.success) {
-    return res.status(400).json({ errors: parseResult.error.format() });
+    return res.status(400).json({ errors: parseResult?.error.format() });
   }
 
   try {
