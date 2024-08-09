@@ -1,4 +1,6 @@
 const validator = (schema) => {    
+    console.log();
+    
     return (req, res, next) => {
         let result = schema.safeParse(req.body);
         if (result?.error) {

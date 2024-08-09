@@ -31,7 +31,9 @@ const productSchema = z.object({
 });
 
 const editProduct = async (req, res) => {
-  const { price, discount, categoryId, subcategoryId } = req.body;  
+
+
+  const { price, discount, categoryId, subcategoryId } = req.body;
   const obj = {
     ...req.body,
     price: Number(price),
@@ -39,7 +41,7 @@ const editProduct = async (req, res) => {
     categoryId: Number(categoryId),
     subcategoryId: +subcategoryId,
   }
-  const parseResult = productSchema.safeParse(obj);  
+  const parseResult = productSchema.safeParse(obj);
   if (!parseResult.success) {
     return res.status(400).json({ errors: parseResult });
   }
@@ -50,10 +52,12 @@ const editProduct = async (req, res) => {
     const img = files.map(file => file.location);
     const { name, price, discount, categoryId, subcategoryId, description, metadata } = parseResult.data;
 
+
     const updatedProduct = await prisma.product.update({
       where: { id },
       data: { img, name, price: Number(price), discount: Number(discount), categoryId: Number(categoryId), subcategoryId: +subcategoryId, description, metadata }
     });
+    console.log(updatedProduct);
 
     res.status(200).json(updatedProduct);
   } catch (error) {

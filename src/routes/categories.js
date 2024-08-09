@@ -21,9 +21,8 @@ router.get('/get/:id', getCategoriesById);
 router.put('/update/:id', validator(categorySchema), auth, editCategoriesById);
 router.delete('/delete/:id', auth, deleteCategoryById);
 
-
-router.post('/subcategory/create', validator(subcategorySchema), auth, createSubcategory);
-router.put('/subcategory/update/:id', validator(subcategorySchema) , auth, updateSubcategory);
+router.post('/subcategory/create', auth, createSubcategory);
+router.put('/subcategory/update/:id', auth, updateSubcategory);
 router.delete('/subcategory/delete/:id', auth, deleteSubcategory);
 
 module.exports = router;
