@@ -12,8 +12,7 @@ app.use(express.urlencoded({ extended: true }));
 
 const { upload, deleteImage } = require('./src/middlewares/upload.middleware');
 
-app.post("/img", auth, upload.array("img", 5), (req, res) => {
-  console.log(req.file);
+app.post("/img", auth, upload.array("img", 5), (req, res) => {  
   res.send(req.file.location);
 })
 app.delete("/img/:filename", deleteImage)
