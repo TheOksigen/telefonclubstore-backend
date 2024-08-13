@@ -1,4 +1,4 @@
-const { S3Client, DeleteObjectCommand } = require('@aws-sdk/client-s3');
+const { S3Client, DeleteObjectCommand, ListObjectsV2Command } = require('@aws-sdk/client-s3');
 const multer = require('multer');
 const multerS3 = require('multer-s3');
 const path = require('path');
@@ -30,7 +30,23 @@ const deleteImage = async (req, res) => {
         res.status(500).json({ error: 'Failed to delete image' });
     }
 };
+const listAllImages = async (req,res) => {
+    const bucketName = 'telefonclubb'; // Your bucket name
 
+    try {
+        const data = await s3.send(new ListObjectsV2Command({
+            Bucket: bucketName,
+        }));
+
+        // Extracting file names/keys from the response
+        const imageKeys = data.Contents.map(item => item.Key);
+        res.send(imageKeys)
+        return imageKeys;
+    } catch (error) {
+        console.error("Error fetching images: ", error);
+        throw new Error("Error fetching images");
+    }
+};
 
 const upload = multer({
     storage: multerS3({
@@ -42,4 +58,4 @@ const upload = multer({
     })
 });
 
-module.exports = { upload, deleteImage }
+module.exports = { upload, deleteImage, listAllImages }
