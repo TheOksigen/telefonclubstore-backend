@@ -15,7 +15,7 @@ const { upload, deleteImage } = require('./src/middlewares/upload.middleware');
 app.post("/img", auth, upload.array("img", 5), (req, res) => {  
   res.send(req.file.location);
 })
-app.delete("/img/:filename", deleteImage)
+app.delete("/img/:filename", auth, deleteImage)
 
 
 app.use('/products', productsRouter);
