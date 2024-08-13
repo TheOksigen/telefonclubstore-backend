@@ -12,7 +12,6 @@ const s3 = new S3Client({
 });
 
 const upload = multer({
-
     storage: multerS3({
         s3: s3,
         bucket: 'telefonclubb',
@@ -22,8 +21,6 @@ const upload = multer({
         key: function (req, file, cb) {
             cb(null, `${Date.now().toString()}.${path.extname(file.originalname)}`);
         },
-
-
     })
 })
 
