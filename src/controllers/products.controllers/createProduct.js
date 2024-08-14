@@ -25,22 +25,22 @@ const productSchema = z.object({
         .positive({ message: 'Subcategory ID must be a positive integer' }),
     description: z.string()
         .min(3, { message: 'Product description must be at least 3 characters long' })
-        .max(255, { message: 'Product description must be less than 255 characters' })
-        .trim(),
+        .max(750, { message: 'Product description must be less than 255 characters' })
+        .trim()
+        .nonempty({ message: 'Product description is required' }),
     metadata: z.string().optional().default('')
 });
 
 const createProduct = async (req, res) => {
-    const files = req.files;
-    const img = files.map(file => file.location);
-    
+    const { img, price, discount, categoryId, subcategoryId } = req.body;
+
     const parseResult = productSchema.safeParse({
         ...req.body,
         img,
-        price: parseFloat(req.body.price),
-        discount: parseInt(req.body.discount),
-        categoryId: parseInt(req.body.categoryId),
-        subcategoryId: parseInt(req.body.subcategoryId),
+        price: parseFloat(price),
+        discount: parseInt(discount),
+        categoryId: parseInt(categoryId),
+        subcategoryId: parseInt(subcategoryId),
     });
 
     if (!parseResult.success) {
@@ -48,7 +48,7 @@ const createProduct = async (req, res) => {
     }
 
     try {
-        const { name, price, discount, categoryId, subcategoryId, description, metadata } = parseResult.data;
+        const { img, name, price, discount, categoryId, subcategoryId, description, metadata } = parseResult.data;
         const product = await prisma.product.create({
             data: {
                 img,
