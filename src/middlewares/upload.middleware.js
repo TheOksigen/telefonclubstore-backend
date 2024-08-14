@@ -13,9 +13,8 @@ const s3 = new S3Client({
 
 const deleteImage = async (req, res) => {
     const { filename } = req.params;
-    const bucketName = 'telefonclubb'; // Ensure this matches your bucket name
-
-    try {        
+    const bucketName = 'telefonclubb';
+    try {
         const deleteParams = {
             Bucket: bucketName,
             Key: filename,
@@ -30,15 +29,14 @@ const deleteImage = async (req, res) => {
         res.status(500).json({ error: 'Failed to delete image' });
     }
 };
-const listAllImages = async (req,res) => {
-    const bucketName = 'telefonclubb'; // Your bucket name
+const listAllImages = async (req, res) => {
+    const bucketName = 'telefonclubb';
 
     try {
         const data = await s3.send(new ListObjectsV2Command({
             Bucket: bucketName,
         }));
 
-        // Extracting file names/keys from the response
         const imageKeys = data.Contents.map(item => item.Key);
         res.send(imageKeys)
         return imageKeys;
