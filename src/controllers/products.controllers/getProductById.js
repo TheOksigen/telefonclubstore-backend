@@ -11,7 +11,7 @@ const getProductByIdSchema = z.object({
 const getProductById = async (req, res) => {
   const parseResult = getProductByIdSchema.parse({ id: Number(req.params.id) });
   if (!parseResult.success) {
-    return res.status(400).json({ errors: parseResult.error.format() });
+    return res.status(400).json({ errors: parseResult});
   }
   try {
     const { id } = parseResult.data;
