@@ -33,7 +33,7 @@ const productSchema = z.object({
 const createProduct = async (req, res) => {
     const files = req.files;
     const img = files.map(file => file.location);
-
+    
     const parseResult = productSchema.safeParse({
         ...req.body,
         img,

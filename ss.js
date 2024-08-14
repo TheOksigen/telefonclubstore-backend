@@ -14,7 +14,7 @@ async function getAllimg() {
             method: "DELETE"
         })
         console.log(`silindi ${item}`);
-        
+
     })
 }
 getAllimg()
