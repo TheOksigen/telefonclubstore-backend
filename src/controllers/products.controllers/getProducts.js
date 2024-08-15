@@ -10,10 +10,18 @@ const getProducts = async (req, res) => {
 
     const products = await prisma.product.findMany({
       select: {
-        id: true, img: true, name: true, category: true,
-        subcategory: true, subcategoryId: true, description: true,
-        discount: true, price: true, metadata: true,
-        createdAt: true, updatedAt: true,
+        id: true,
+        img: true,
+        name: true,
+        category: true,
+        subcategory: true,
+        subcategoryId: false,
+        description: true,
+        discount: true,
+        price: true,
+        metadata: true,
+        createdAt: true,
+        updatedAt: true,
       },
       skip: skip, take: limit,
     });
