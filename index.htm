@@ -6,76 +6,94 @@
     <title>Create Product</title>
 </head>
 <body>
-    <h1>Create a New Product</h1>
-    <form id="product-form" enctype="multipart/form-data">
+    <h1>Create Product</h1>
+    <form id="productForm">
+        <label for="img">Upload Image:</label><br>
+        <input type="file" id="img" name="img" accept="image/*" required oninput="uploadImage(this)"><br><br>
 
-        <label for="name">Product Name:</label>
-        <input type="text" id="name" name="name" required><br><br>
+        <label for="name">Product Name:</label><br>
+        <input type="text" id="name" name="name" value="Sample Product" required><br><br>
 
-        <label for="price">Price:</label>
-        <input type="number" id="price" name="price" step="0.01" required><br><br>
+        <label for="price">Price:</label><br>
+        <input type="number" step="0.01" id="price" name="price" value="19.99" required><br><br>
 
-        <label for="discount">Discount (%):</label>
-        <input type="number" id="discount" name="discount" step="1" min="0" max="100" required><br><br>
+        <label for="discount">Discount (%):</label><br>
+        <input type="number" id="discount" name="discount" value="10" required><br><br>
 
-        <label for="categoryId">Category ID:</label>
-        <input type="number" value="19" id="categoryId" name="categoryId" required><br><br>
-        
-        <label for="subcategoryId">Subcategory ID:</label>
-        <input type="number" value="46" id="subcategoryId" name="subcategoryId" required><br><br>
+        <label for="categoryId">Category ID:</label><br>
+        <input type="number" id="categoryId" name="categoryId" value="1" required><br><br>
 
-        <label for="description">Description:</label>
-        <textarea id="description" name="description" rows="4" required></textarea><br><br>
+        <label for="subcategoryId">Subcategory ID:</label><br>
+        <input type="number" id="subcategoryId" name="subcategoryId" value="2" required><br><br>
 
-        <label for="img">Images:</label>
-        <input type="file" id="img" name="img" multiple required><br><br>
+        <label for="description">Description:</label><br>
+        <textarea id="description" name="description" rows="4" cols="50" required>This is a sample product description.</textarea><br><br>
 
-        <button type="submit">Create Product</button>
+        <label for="metadata">Metadata (optional):</label><br>
+        <input type="text" id="metadata" name="metadata" value="Additional info"><br><br>
+
+        <input type="hidden" id="imgUrl" name="imgUrl">
+
+        <button type="button" onclick="submitForm()">Create Product</button>
     </form>
 
     <script>
-        async function fetchAllProducts() {
-            try {
-                const response = await fetch("http://localhost:3000/products/all");
-                if (!response.ok) throw new Error('Network response was not ok');
+        async function uploadImage(input) {
+            const file = input.files[0];
+
+            if (!file) {
+                alert('Please select an image to upload.');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('img', file);
+
+            const response = await fetch('http://localhost:3000/img', {
+                method: 'POST',
+                body: formData
+            });
+
+            if (response.ok) {
                 const result = await response.json();
-                console.log(result);
-            } catch (error) {
-                console.error('Error fetching products:', error);
+                document.getElementById('imgUrl').value = result.img_url;
+                alert('Image uploaded successfully!');
+            } else {
+                alert('Error uploading image. Please try again.');
             }
         }
-        fetchAllProducts();
 
-        document.getElementById('product-form').addEventListener('submit', async (event) => {
-            event.preventDefault();
+        function submitForm() {
+            const form = document.getElementById('productForm');
 
-            const formData = new FormData(event.target);
-            const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyaWQiOjIsImlhdCI6MTcyMzA0NDI0OCwiZXhwIjozNjAwMDE3MjMwNDA2NDh9.frFBxKt_U5snQDAy9y_vzfcXjjLGTlClzIU0rPWROEw';
+            // Prepare product data as JSON
+            const data = {
+                img: [document.getElementById('imgUrl').value], // Image URL from the hidden input
+                name: form.name.value,
+                price: parseFloat(form.price.value),
+                discount: parseInt(form.discount.value),
+                categoryId: parseInt(form.categoryId.value),
+                subcategoryId: parseInt(form.subcategoryId.value),
+                description: form.description.value.trim(),
+                metadata: form.metadata.value.trim()
+            };
 
-            try {
-                const response = await fetch('http://localhost:3000/products/update/30', { 
-                    method: 'PUT',
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    },
-                    body: formData
-                });
-
-                if (!response.ok) {
-                    const errorData = await response.json();
-                    console.error('Error:', errorData);
-                    alert('Error creating product. Check console for details.');
-                    return;
-                }
-
-                const result = await response.json();
-                alert('Product created successfully!');
-                console.log('Product created:', result);
-            } catch (error) {
-                console.error('Error:', error);
-                alert('Failed to create product.');
-            }
-        });
+            // Send product data to backend
+            fetch('http://localhost:3000/products/create', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(result => {
+                alert('Product created successfully: ' + JSON.stringify(result));
+            })
+            .catch(error => {
+                alert('Error creating product: ' + error.message);
+            });
+        }
     </script>
 </body>
 </html>

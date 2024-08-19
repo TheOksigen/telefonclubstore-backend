@@ -3,7 +3,7 @@ const { z } = require('zod');
 const prisma = new PrismaClient();
 
 const productSchema = z.object({
-    img: z.array(z.string().url({ message: 'Invalid URL format' })).nonempty({ message: 'At least one image URL is required' }),
+    img: z.array(z.string()).nonempty({ message: 'At least one image URL is required' }),
     name: z.string()
         .min(3, { message: 'Product name must be at least 3 characters long' })
         .max(255, { message: 'Product name must be less than 255 characters' })
@@ -61,7 +61,7 @@ const createProduct = async (req, res) => {
                 metadata
             }
         });
-        res.status(201).json(product);
+        res.status(201).json({ status: true, ...product });
     } catch (error) {
         console.log(error);
         res.status(500).json({ error: error.message });
