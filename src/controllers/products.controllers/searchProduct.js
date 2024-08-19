@@ -4,7 +4,7 @@ const prisma = new PrismaClient();
 
 const querySchema = z.object({
   name: z.string()
-    .min(3, { message: 'Product name must be at least 3 characters long' })
+    .min(2, { message: 'Product name must be at least 2 characters long' })
     .max(255, { message: 'Product name must be less than 255 characters' })
 })
 
