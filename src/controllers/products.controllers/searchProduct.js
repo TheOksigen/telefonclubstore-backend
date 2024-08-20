@@ -10,8 +10,13 @@ const querySchema = z.object({
 
 const searchProduct = async (req, res) => {
   try {
-    querySchema.parse(req.query)
-    const { name } = req.query;
+    const parseResult = querySchema.safeParse(req.query)
+
+    if (!parseResult.success) {
+      return res.status(404).json({ errore: parseResult.error.format() })
+    }
+    const { name } = parseResult.data;
+
     const filter = name ? {
       name: {
         contains: name,
@@ -21,7 +26,14 @@ const searchProduct = async (req, res) => {
 
     const products = await prisma.product.findMany({
       where: filter,
-      include: { category: true }
+      select: {
+        id: true, img: true,
+        name: true, category: true, subcategory: true,
+        subcategoryId: false, description: true,
+        discount: true, price: true,
+        metadata: true, createdAt: true, updatedAt: true,
+      },
+
     });
 
     res.status(200).json(products);
