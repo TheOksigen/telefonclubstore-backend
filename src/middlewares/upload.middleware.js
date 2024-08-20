@@ -1,7 +1,6 @@
-const { S3Client, DeleteObjectCommand, ListObjectsV2Command } = require('@aws-sdk/client-s3');
+const { S3Client, ListObjectsV2Command, DeleteObjectCommand } = require('@aws-sdk/client-s3');
 const multer = require('multer');
 const multerS3 = require('multer-s3');
-const path = require('path');
 
 const s3 = new S3Client({
     region: process.env.AWS_REGION,
@@ -21,7 +20,6 @@ const deleteImage = async (req, res) => {
         };
 
         await s3.send(new DeleteObjectCommand(deleteParams));
-
 
         res.status(200).json({ message: 'Image deleted successfully' });
     } catch (error) {
