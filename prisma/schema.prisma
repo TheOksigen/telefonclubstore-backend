@@ -8,12 +8,13 @@ datasource db {
   url       = env("TELEFONCLUB_PRISMA_URL")
   directUrl = env("TELEFONCLUB_URL_NON_POOLING")
 }
+
 model Product {
   id            Int         @id @default(autoincrement())
   img           String[]
   name          String      @db.VarChar(255)
-  price         Float       
-  discount      Int         @default(0) 
+  price         Float
+  discount      Int         @default(0)
   categoryId    Int
   category      Category    @relation(fields: [categoryId], references: [id], onDelete: Cascade)
   subcategoryId Int
@@ -21,7 +22,7 @@ model Product {
   description   String      @db.Text
   createdAt     DateTime    @default(now())
   updatedAt     DateTime    @updatedAt
-  metadata      String?      @default("")
+  metadata      String?     @default("")
 }
 
 model Category {

@@ -1,7 +1,8 @@
-const { S3Client, ListObjectsV2Command, DeleteObjectCommand } = require('@aws-sdk/client-s3');
+const { S3Client, ListObjectsV2Command, DeleteObjectCommand, DeleteObjectsCommand } = require('@aws-sdk/client-s3');
 const multer = require('multer');
 const multerS3 = require('multer-s3');
 
+// Initialize S3 client
 const s3 = new S3Client({
     region: process.env.AWS_REGION,
     credentials: {
@@ -10,37 +11,52 @@ const s3 = new S3Client({
     }
 });
 
-const deleteImage = async (req, res) => {
-    const { filename } = req.params;
-    const bucketName = 'telefonclubb';
+// Bulk delete images function
+const bulkDeleteImages = async (req, res) => {
+    const { filenames } = req.body;
     try {
-        const deleteParams = {
-            Bucket: bucketName,
-            Key: filename,
-        };
-
-        await s3.send(new DeleteObjectCommand(deleteParams));
-
-        res.status(200).json({ message: 'Image deleted successfully' });
+        const result = await bulkDeleteFunc(filenames);
+        res.status(200).json({ message: result });
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: 'Failed to delete image' });
+        console.error("Error deleting images:", error);
+        res.status(500).json({ error: `Failed to delete images: ${error.message}` });
     }
 };
+
+const bulkDeleteFunc = async (filenames) => {
+    console.log(filenames);
+
+    try {
+        const deleteParams = {
+            Bucket: "telefonclubb",
+            Delete: {
+                Objects: filenames.map(filename => ({ Key: filename })),
+                Quiet: false
+            }
+        };
+        const response = await s3.send(new DeleteObjectsCommand(deleteParams));
+
+        const deletedKeys = response.Deleted.map(obj => obj.Key);
+        console.log(`Successfully deleted images: ${deletedKeys.join(', ')}`)
+        return `Successfully deleted images: ${deletedKeys.join(', ')}`;
+    } catch (error) {
+        console.error("Error deleting images:", error);
+        throw new Error("Failed to delete images");
+    }
+};
+
 const listAllImages = async (req, res) => {
     const bucketName = 'telefonclubb';
-
     try {
         const data = await s3.send(new ListObjectsV2Command({
             Bucket: bucketName,
         }));
 
         const imageKeys = data.Contents.map(item => item.Key);
-        res.send(imageKeys)
-        return imageKeys;
+        res.status(200).json({ img: imageKeys, message: 'Images successfully deleted' });
     } catch (error) {
         console.error("Error fetching images: ", error);
-        throw new Error("Error fetching images");
+        res.status(500).json({ error: "Error fetching images" });
     }
 };
 
@@ -54,4 +70,4 @@ const upload = multer({
     })
 });
 
-module.exports = { upload, deleteImage, listAllImages }
+module.exports = { upload, bulkDeleteImages, listAllImages, bulkDeleteFunc };

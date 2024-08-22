@@ -24,7 +24,7 @@
         <input type="number" id="categoryId" name="categoryId" value="1" required><br><br>
 
         <label for="subcategoryId">Subcategory ID:</label><br>
-        <input type="number" id="subcategoryId" name="subcategoryId" value="2" required><br><br>
+        <input type="number" id="subcategoryId" name="subcategoryId" value="1" required><br><br>
 
         <label for="description">Description:</label><br>
         <textarea id="description" name="description" rows="4" cols="50" required>This is a sample product description.</textarea><br><br>
@@ -40,10 +40,10 @@
     <script>
         async function uploadImage(input) {
             const file = input.files[0];
-
             if (!file) {
                 alert('Please select an image to upload.');
                 return;
+                
             }
 
             const formData = new FormData();

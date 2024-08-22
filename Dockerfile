@@ -1,4 +1,4 @@
-FROM bun:alpine
+FROM oven/bun
 COPY package.json package.json
 RUN bun install
 COPY . .
