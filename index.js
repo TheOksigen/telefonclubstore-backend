@@ -12,10 +12,10 @@ app.use(express.urlencoded({ extended: true }));
 
 const { upload, bulkDeleteImages } = require('./src/middlewares/upload.middleware');
 
-app.post("/img", auth, upload.single("img"), (req, res) => {
+app.post("/img", upload.single("img"), (req, res) => {
   res.send({ img_url: req.file.location });
 })
-app.delete("/img/:filename", auth, bulkDeleteImages)
+app.delete("/img/:filename",  bulkDeleteImages)
 
 
 app.use('/products', productsRouter);

@@ -19,7 +19,7 @@ router.post('/create', validator(categorySchema), auth, createCategory);
 router.get('/all', getCategories);
 router.get('/get/:id', getCategoriesById);
 router.put('/update/:id', validator(categorySchema), auth, editCategoriesById);
-router.delete('/delete/:id', auth, deleteCategoryById);
+router.delete('/delete/:id', auth, deleteCategoryById); 
 
 router.post('/subcategory/create', auth, createSubcategory);
 router.put('/subcategory/update/:id', auth, updateSubcategory);

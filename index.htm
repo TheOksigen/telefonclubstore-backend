@@ -9,7 +9,9 @@
     <h1>Create Product</h1>
     <form id="productForm">
         <label for="img">Upload Image:</label><br>
-        <input type="file" id="img" name="img" accept="image/*" required oninput="uploadImage(this)"><br><br>
+        <input type="file" id="img" name="img" accept="image/*" required oninput="uploadImage(this)"><br>
+        <progress id="progressBar" value="0" max="100" style="display: none; width: 100%;"></progress>
+        <span id="progressPercent"></span><br><br>
 
         <label for="name">Product Name:</label><br>
         <input type="text" id="name" name="name" value="Sample Product" required><br><br>
@@ -38,37 +40,56 @@
     </form>
 
     <script>
-        async function uploadImage(input) {
+        function uploadImage(input) {
             const file = input.files[0];
             if (!file) {
                 alert('Please select an image to upload.');
                 return;
-                
             }
+
+            const progressBar = document.getElementById('progressBar');
+            const progressPercent = document.getElementById('progressPercent');
+            progressBar.style.display = 'block';
+            progressPercent.style.display = 'inline';
 
             const formData = new FormData();
             formData.append('img', file);
 
-            const response = await fetch('http://localhost:3000/img', {
-                method: 'POST',
-                body: formData
-            });
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', 'http://localhost:3000/img', true);
 
-            if (response.ok) {
-                const result = await response.json();
-                document.getElementById('imgUrl').value = result.img_url;
-                alert('Image uploaded successfully!');
-            } else {
+            xhr.upload.onprogress = function(event) {
+                if (event.lengthComputable) {
+                    const percentComplete = Math.round((event.loaded / event.total) * 100);
+                    progressBar.value = percentComplete;
+                    progressPercent.textContent = percentComplete + '%';
+                }
+            };
+
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    const result = JSON.parse(xhr.responseText);
+                    document.getElementById('imgUrl').value = result.img_url;
+                    alert('Image uploaded successfully!');
+                    progressBar.style.display = 'none';
+                    progressPercent.style.display = 'none';
+                } else {
+                    alert('Error uploading image. Please try again.');
+                }
+            };
+
+            xhr.onerror = function() {
                 alert('Error uploading image. Please try again.');
-            }
+            };
+
+            xhr.send(formData);
         }
 
         function submitForm() {
             const form = document.getElementById('productForm');
-
-            // Prepare product data as JSON
+            
             const data = {
-                img: [document.getElementById('imgUrl').value], // Image URL from the hidden input
+                img: [document.getElementById('imgUrl').value], 
                 name: form.name.value,
                 price: parseFloat(form.price.value),
                 discount: parseInt(form.discount.value),
@@ -77,8 +98,7 @@
                 description: form.description.value.trim(),
                 metadata: form.metadata.value.trim()
             };
-
-            // Send product data to backend
+            
             fetch('http://localhost:3000/products/create', {
                 method: 'POST',
                 headers: {
