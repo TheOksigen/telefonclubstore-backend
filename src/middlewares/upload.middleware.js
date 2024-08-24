@@ -11,21 +11,27 @@ const s3 = new S3Client({
     }
 });
 
-// Bulk delete images function
-const bulkDeleteImages = async (req, res) => {
-    const { filenames } = req.body;
+const deleteImage = async (req, res) => {
+    const { filename } = req.body;
 
-    // Validate filenames
-    if (!Array.isArray(filenames) || filenames.length === 0) {
-        return res.status(400).json({ error: "Filenames must be provided as a non-empty array." });
+    // Validate filename
+    if (!filename || typeof filename !== 'string') {
+        return res.status(400).json({ error: "Filename must be provided as a string." });
     }
 
     try {
-        const result = await bulkDeleteFunc(filenames);
-        res.status(200).json({ message: result });
+        const deleteParams = {
+            Bucket: "telefonclubb",
+            Key: filename
+        };
+
+        const response = await s3.send(new DeleteObjectCommand(deleteParams));
+
+        console.log(`Successfully deleted image: ${filename}`);
+        res.status(200).json({ message: `Successfully deleted image: ${filename}` });
     } catch (error) {
-        console.error("Error deleting images:", error);
-        res.status(500).json({ error: `Failed to delete images: ${error.message}` });
+        console.error("Error deleting image:", error);
+        res.status(500).json({ error: `Failed to delete image: ${error.message}` });
     }
 };
 
@@ -74,4 +80,4 @@ const upload = multer({
     })
 });
 
-module.exports = { upload, bulkDeleteImages, listAllImages, bulkDeleteFunc };
+module.exports = { upload,  deleteImage, listAllImages, bulkDeleteFunc };
