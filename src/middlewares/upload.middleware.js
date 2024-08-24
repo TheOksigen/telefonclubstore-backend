@@ -14,6 +14,12 @@ const s3 = new S3Client({
 // Bulk delete images function
 const bulkDeleteImages = async (req, res) => {
     const { filenames } = req.body;
+
+    // Validate filenames
+    if (!Array.isArray(filenames) || filenames.length === 0) {
+        return res.status(400).json({ error: "Filenames must be provided as a non-empty array." });
+    }
+
     try {
         const result = await bulkDeleteFunc(filenames);
         res.status(200).json({ message: result });
@@ -24,12 +30,6 @@ const bulkDeleteImages = async (req, res) => {
 };
 
 const bulkDeleteFunc = async (filenames) => {
-    if (!Array.isArray(filenames)) {
-        throw new Error("Invalid input: filenames should be an array");
-    }
-
-    console.log(filenames);
-
     try {
         const deleteParams = {
             Bucket: "telefonclubb",
@@ -44,8 +44,8 @@ const bulkDeleteFunc = async (filenames) => {
         console.log(`Successfully deleted images: ${deletedKeys.join(', ')}`);
         return `Successfully deleted images: ${deletedKeys.join(', ')}`;
     } catch (error) {
-        console.error("Error deleting images:", error);
-        throw new Error("Failed to delete images");
+        console.error("Failed to delete images:", error);
+        throw new Error(`Failed to delete images: ${error.message}`);
     }
 };
 
@@ -57,7 +57,7 @@ const listAllImages = async (req, res) => {
         }));
 
         const imageKeys = data.Contents.map(item => item.Key);
-        res.status(200).json({ img: imageKeys, message: 'Images successfully deleted' });
+        res.status(200).json({ img: imageKeys, message: 'Images successfully fetched' });
     } catch (error) {
         console.error("Error fetching images: ", error);
         res.status(500).json({ error: "Error fetching images" });
