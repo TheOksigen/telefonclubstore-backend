@@ -24,6 +24,10 @@ const bulkDeleteImages = async (req, res) => {
 };
 
 const bulkDeleteFunc = async (filenames) => {
+    if (!Array.isArray(filenames)) {
+        throw new Error("Invalid input: filenames should be an array");
+    }
+
     console.log(filenames);
 
     try {
@@ -37,7 +41,7 @@ const bulkDeleteFunc = async (filenames) => {
         const response = await s3.send(new DeleteObjectsCommand(deleteParams));
 
         const deletedKeys = response.Deleted.map(obj => obj.Key);
-        console.log(`Successfully deleted images: ${deletedKeys.join(', ')}`)
+        console.log(`Successfully deleted images: ${deletedKeys.join(', ')}`);
         return `Successfully deleted images: ${deletedKeys.join(', ')}`;
     } catch (error) {
         console.error("Error deleting images:", error);

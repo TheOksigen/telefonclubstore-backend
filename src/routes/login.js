@@ -8,7 +8,7 @@ const validator = require('../middlewares/validation.middleware');
 
 const authSchema = require('../schema/auth.schema');
 
-router.post('/login',  login);
+router.post('/login', login);
 router.post('/register',  auth, register);
 router.get('/verify-token', auth, verifyToken);
 
