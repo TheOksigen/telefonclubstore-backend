@@ -12,9 +12,9 @@ const s3 = new S3Client({
 });
 
 const deleteImage = async (req, res) => {
-    const { filename } = req.body;
-
-    // Validate filename
+    const { filename } = req.params;
+    
+    
     if (!filename || typeof filename !== 'string') {
         return res.status(400).json({ error: "Filename must be provided as a string." });
     }
@@ -80,4 +80,4 @@ const upload = multer({
     })
 });
 
-module.exports = { upload,  deleteImage, listAllImages, bulkDeleteFunc };
+module.exports = { upload, deleteImage, listAllImages, bulkDeleteFunc };
