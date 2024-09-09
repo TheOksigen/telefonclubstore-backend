@@ -25,7 +25,7 @@ const getProducts = async (req, res) => {
       skip: skip, take: limit,
     });
 
-    res.status(200).json(products);
+    res.status(200).json(products, { skip: skip, take: limit});
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
