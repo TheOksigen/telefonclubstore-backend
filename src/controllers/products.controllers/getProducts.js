@@ -2,7 +2,7 @@ const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
 const getProducts = async (req, res) => {
-  try { 
+  try {
     const page = parseInt(req.query.page, 10) || 1;
     const limit = parseInt(req.query.limit, 10) || 10;
     const skip = (page - 1) * limit;
@@ -25,7 +25,7 @@ const getProducts = async (req, res) => {
       skip: skip, take: limit,
     });
 
-    res.status(200).json(products, { skip: skip, take: limit});
+    res.status(200).json({ data: products, skip: skip, take: limit });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
