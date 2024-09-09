@@ -29,6 +29,7 @@ model Category {
   id           Int           @id @default(autoincrement())
   categoryName String        @unique @db.VarChar(255)
   Product      Product[]
+  rate         Int           @default(0)
   Subcategory  Subcategory[]
 }
 
@@ -40,8 +41,14 @@ model Subcategory {
   Product      Product[]
 }
 
+enum USER {
+  ADMIN
+  USER
+}
+
 model User {
   id       Int    @id @default(autoincrement())
   login    String @unique @db.VarChar(255)
   password String @db.VarChar(255)
+  role     USER   @default(USER)
 }

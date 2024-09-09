@@ -1,0 +1,8 @@
+-- CreateEnum
+CREATE TYPE "USER" AS ENUM ('ADMIN', 'USER');
+
+-- AlterTable
+ALTER TABLE "Category" ADD COLUMN     "rate" INTEGER NOT NULL DEFAULT 0;
+
+-- AlterTable
+ALTER TABLE "User" ADD COLUMN     "role" "USER" NOT NULL DEFAULT 'USER';
